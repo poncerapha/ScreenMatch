@@ -1,18 +1,35 @@
 import br.com.alura.screenmatch.models.Movie;
+import br.com.alura.screenmatch.models.TvShow;
+import br.com.alura.screenmatch.utils.TimeCalculator;
 
 public class Main {
     public static void main(String[] args) {
-        Movie myMovie = new Movie();
-        myMovie.setName("O Poderoso Chefao");
-        myMovie.setReleaseDate(1970);
-        myMovie.setMovieDuration(180);
-        myMovie.setIncludeInAccount(true);
+        Movie favoriteMovie = new Movie();
+        favoriteMovie.setName("The Matrix");
+        favoriteMovie.setReleaseDate(1999);
+        favoriteMovie.setMovieDuration(135);
+        favoriteMovie.setIncludeInAccount(true);
 
-        myMovie.renderMovieInfo();
-        myMovie.sendReview(8);
-        myMovie.sendReview(5);
-        myMovie.sendReview(10);
+        Movie otherMovie = new Movie();
+        otherMovie.setName("John Wick");
+        otherMovie.setReleaseDate(2014);
+        otherMovie.setMovieDuration(101);
+        otherMovie.setIncludeInAccount(true);
 
-        System.out.println("MEdia de avalicaoes do filme: " + myMovie.getRatingAverage());
+        TvShow tvShow = new TvShow();
+        tvShow.setName("La Casa de Papel");
+        tvShow.setReleaseDate(2017);
+        tvShow.setIncludeInAccount(true);
+        tvShow.setRunning(true);
+        tvShow.setSeason(5);
+        tvShow.setEpisodePerSeason(10);
+        tvShow.setMinutesPerEpisode(45);
+
+        TimeCalculator calculator = new TimeCalculator();
+        calculator.addTitle(favoriteMovie);
+        calculator.addTitle(otherMovie);
+        calculator.addTitle(tvShow);
+
+        System.out.println("Tempo total: " +calculator.getTotalTime());
     }
 }

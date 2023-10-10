@@ -14,6 +14,12 @@ public class Title implements Comparable<Title> {
         this.releaseDate = releaseDate;
     }
 
+    public Title(TitleDTO titleDTO) {
+        this.name = titleDTO.title();
+        this.releaseDate = Integer.parseInt(titleDTO.year());
+        this.movieDuration = Integer.parseInt(titleDTO.runTime().substring(0, 2));
+    }
+
     public String getName() {
         return name;
     }

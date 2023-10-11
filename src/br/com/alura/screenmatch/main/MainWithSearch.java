@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.main;
 
+import br.com.alura.screenmatch.exceptions.ConvertErrorYearException;
 import br.com.alura.screenmatch.models.Title;
 import br.com.alura.screenmatch.models.TitleDTO;
 import com.google.gson.FieldNamingPolicy;
@@ -21,22 +22,33 @@ public class MainWithSearch {
         var search = scanner.nextLine();
 
         String apiKey = "637876a6";
-        String uri = "https://www.omdbapi.com/?t=" +search + "&apikey=" + apiKey;
+        String uri = "https://www.omdbapi.com/?t=" + search.replace(" ", "+") + "&apikey=" + apiKey;
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(uri)).build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(uri)).build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        System.out.println(response.body());
+            System.out.println(response.body());
 
-        String json = response.body();
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
+            String json = response.body();
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                    .create();
 
-        TitleDTO titleDTO = gson.fromJson(json, TitleDTO.class);
-        System.out.println(titleDTO);
-        Title myTitle = new Title(titleDTO);
-        System.out.println(myTitle);
+            TitleDTO titleDTO = gson.fromJson(json, TitleDTO.class);
+            System.out.println(titleDTO);
+            Title myTitle = new Title(titleDTO);
+            System.out.println(myTitle);
+        } catch (NumberFormatException e) {
+            System.out.println("aconteceu um erro: ");
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("algum erro de argumento na busca, verifique o endereco");
+        } catch (ConvertErrorYearException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println("O programa encerrou corretamente");
+        }
     }
 }

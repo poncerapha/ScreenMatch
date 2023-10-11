@@ -1,5 +1,7 @@
 package br.com.alura.screenmatch.models;
 
+import br.com.alura.screenmatch.exceptions.ConvertErrorYearException;
+
 public class Title implements Comparable<Title> {
 
     private String name;
@@ -16,8 +18,13 @@ public class Title implements Comparable<Title> {
 
     public Title(TitleDTO titleDTO) {
         this.name = titleDTO.title();
-        this.releaseDate = Integer.parseInt(titleDTO.year());
-        this.movieDuration = Integer.parseInt(titleDTO.runTime().substring(0, 2));
+
+        if (titleDTO.year().length() > 4) {
+            throw new ConvertErrorYearException("Não consegui converter o ano porque tem mais de 04 caracteres.");
+        }
+
+        this.releaseDate = Integer.valueOf(titleDTO.year());
+        this.movieDuration = Integer.valueOf(titleDTO.runtime().substring(0, 2));
     }
 
     public String getName() {
